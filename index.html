@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="lt" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atradimų Miunchenas - Bavarijos Širdis</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Playfair Display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        bavaria: {
+                            blue: '#0d6e56',
+                            dark: '#12201c',
+                            gold: '#d4a017',
+                            accent: '#5eead4'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-bg {
+            background: linear-gradient(rgba(18, 32, 28, 0.55), rgba(18, 32, 28, 0.75)), 
+                        url('https://images.unsplash.com/photo-1595867818082-083862f3d630?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 font-sans antialiased selection:bg-bavaria-blue selection:text-white">
+
+    <!-- Navigacija -->
+    <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-stone-900/90 backdrop-blur-md border-b border-stone-800 text-white" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-bavaria-blue flex items-center justify-center font-bold text-xl text-white shadow-lg border-2 border-white/20">
+                        M
+                    </div>
+                    <span class="font-serif text-2xl font-bold tracking-wide">MÜNCHEN</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8 text-sm font-medium">
+                        <a href="#about" class="hover:text-bavaria-accent transition-colors py-2">Apie Miestą</a>
+                        <a href="#attractions" class="hover:text-bavaria-accent transition-colors py-2">Lankytinos Vietos</a>
+                        <a href="#culture" class="hover:text-bavaria-accent transition-colors py-2">Kultūra ir Tradicijos</a>
+                        <a href="#gallery" class="hover:text-bavaria-accent transition-colors py-2">Galerija</a>
+                        <a href="#contact" class="bg-bavaria-blue hover:bg-emerald-800 text-white px-5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all">Planuoti Kelionę</a>
+                    </div>
+                </div>
+                <!-- Mobilus mygtukas -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="p-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobilus meniu -->
+        <div class="md:hidden hidden bg-stone-900 border-b border-stone-800 px-4 pt-2 pb-6 space-y-3" id="mobile-menu">
+            <a href="#about" class="block text-stone-300 hover:text-white py-2">Apie Miestą</a>
+            <a href="#attractions" class="block text-stone-300 hover:text-white py-2">Lankytinos Vietos</a>
+            <a href="#culture" class="block text-stone-300 hover:text-white py-2">Kultūra ir Tradicijos</a>
+            <a href="#gallery" class="block text-stone-300 hover:text-white py-2">Galerija</a>
+            <a href="#contact" class="block bg-bavaria-blue text-white text-center py-2.5 rounded-full mt-4">Planuoti Kelionę</a>
+        </div>
+    </nav>
+
+    <!-- Hero Sekcija -->
+    <header class="hero-bg min-h-screen flex items-center justify-center relative pt-20">
+        <div class="max-w-5xl mx-auto px-4 text-center text-white z-10 py-16">
+            <span class="inline-block bg-bavaria-blue/80 backdrop-blur-md text-white text-xs md:text-sm uppercase tracking-widest px-4 py-1.5 rounded-full mb-6 font-semibold border border-white/20">
+                Bavarijos Sostinė &bull; Vokietija
+            </span>
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+                Patirkite Tradicijų ir <br class="hidden sm:inline"/><span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-teal-100 to-amber-200">Inovacijų Harmoniją</span>
+            </h1>
+            <p class="text-lg sm:text-xl md:text-2xl text-stone-200 max-w-3xl mx-auto mb-10 font-light leading-relaxed">
+                Nuo didingų Marienplatz aikštės bokštų iki gyvybingų alaus sodų ir Alpių panoramų. Miunchenas laukia jūsų su atviromis rankomis.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#attractions" class="w-full sm:w-auto bg-bavaria-blue hover:bg-emerald-800 text-white font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                    <span>Atskleisti Miestą</span>
+                    <i class="fa-solid fa-arrow-down"></i>
+                </a>
+                <a href="#contact" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 font-medium px-8 py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-2">
+                    <i class="fa-regular fa-compass"></i>
+                    <span>Kelionės Gidas</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Slinkimo indikatorius -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60 animate-bounce text-center hidden sm:block">
+            <span class="text-xs uppercase tracking-widest block mb-1">Slinkti žemyn</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+    </header>
+
+    <!-- Statisitka / Trumpi Faktai -->
+    <section class="bg-white py-12 border-b border-stone-100 shadow-sm relative z-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="p-4">
+                    <p class="font-serif text-3xl sm:text-4xl font-bold text-bavaria-blue mb-1">1.5M+</p>
+                    <p class="text-stone-500 text-sm font-medium uppercase tracking-wider">Gyventojų</p>
+                </div>
+                <div class="p-4">
+                    <p class="font-serif text-3xl sm:text-4xl font-bold text-bavaria-blue mb-1">1158 m.</p>
+                    <p class="text-stone-500 text-sm font-medium uppercase tracking-wider">Miesto įkūrimas</p>
+                </div>
+                <div class="p-4">
+                    <p class="font-serif text-3xl sm:text-4xl font-bold text-bavaria-blue mb-1">6 mln.</p>
+                    <p class="text-stone-500 text-sm font-medium uppercase tracking-wider">Oktoberfest lankytojų</p>
+                </div>
+                <div class="p-4">
+                    <p class="font-serif text-3xl sm:text-4xl font-bold text-bavaria-blue mb-1">375 ha</p>
+                    <p class="text-stone-500 text-sm font-medium uppercase tracking-wider">Anglų Sodo plotas</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Apie Miuncheną -->
+    <section id="about" class="py-24 bg-stone-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <span class="text-bavaria-blue font-bold tracking-widest text-xs uppercase block mb-2">Apie Bavarijos Sostinę</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 mb-6 leading-tight">
+                        Miestas, kuris derina karališką didybę ir šiuolaikinį gyvenimo būdą
+                    </h2>
+                    <p class="text-stone-600 mb-6 leading-relaxed">
+                        Miunchenas – tai Vokietijos trečias pagal dydį miestas, įsikūręs vaizdingoje Izaro upės pakrantėje prie pat Alpių papėdės. Šis miestas garsėja ne tik savo turtinga istorija, architektūra ir muziejais, bet ir ypatinga gyvenimo kokybe bei jaukia atmosferai, dažnai vadinama <em>"Gemütlichkeit"</em>.
+                    </p>
+                    <p class="text-stone-600 mb-8 leading-relaxed">
+                        Čia dera viskas: pasaulinio lygio technologijų bendrovės, tokios kaip BMW ir Siemens, bei šimtametės aludarystės tradicijos, gyvuojančios turgavietėse ir parkuose.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex items-start space-x-3 p-3 rounded-xl bg-white shadow-sm border border-stone-100">
+                            <i class="fa-solid fa-beer-mug-empty text-bavaria-blue text-xl mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-stone-900 text-sm">Gili kultūra</h4>
+                                <p class="text-xs text-stone-500">Tradiciniai alaus sodai ir šventės</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3 p-3 rounded-xl bg-white shadow-sm border border-stone-100">
+                            <i class="fa-solid fa-mountain text-bavaria-blue text-xl mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-stone-900 text-sm">Alpių Kaimynystė</h4>
+                                <p class="text-xs text-stone-500">Nuostabūs vaizdai ir gamtos pramogos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+                        <img src="https://images.unsplash.com/photo-1577495508048-b635879837f1?q=80&w=1000&auto=format&fit=crop" alt="Marienplatz ir Rotušė" class="w-full h-[480px] object-cover">
+                    </div>
+                    <!-- Dekoratyvus elementas -->
+                    <div class="absolute -bottom-6 -left-6 w-64 h-64 bg-bavaria-blue/10 rounded-3xl -z-0"></div>
+                    <div class="absolute -top-6 -right-6 w-48 h-48 bg-amber-300/15 rounded-3xl -z-0"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Lankytinos Vietos -->
+    <section id="attractions" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-bavaria-blue font-bold tracking-widest text-xs uppercase block mb-2">Objektai</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 mb-4">Pagrindinės Miuncheno Vietos</h2>
+                <p class="text-stone-600">Atradimai, kurių negalite praleisti lankydamiesi Bavarijos sostinėje.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Objektai 1 -->
+                <div class="group bg-stone-50 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100 flex flex-col">
+                    <div class="relative overflow-hidden h-60">
+                        <img src="https://images.unsplash.com/photo-1595867818082-083862f3d630?q=80&w=800&auto=format&fit=crop" alt="Marienplatz" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-4 left-4 bg-stone-900/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full">Istorinis Centras</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-serif text-xl font-bold text-stone-900 mb-2 group-hover:text-bavaria-blue transition-colors">Marienplatz Aikštė</h3>
+                            <p class="text-stone-600 text-sm leading-relaxed mb-4">
+                                Miesto širdis su didinga Naująja rotuše (Neues Rathaus) ir garsiuoju Glockenspiel laikrodžio šou, vykstančiu kasdien.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-stone-200 flex justify-between items-center text-xs text-stone-500">
+                            <span><i class="fa-regular fa-clock mr-1"></i> Nemokamas lankymas</span>
+                            <span class="text-bavaria-blue font-semibold">Žiūrėti žemėlapyje &rarr;</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Objektai 2 -->
+                <div class="group bg-stone-50 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100 flex flex-col">
+                    <div class="relative overflow-hidden h-60">
+                        <img src="https://images.unsplash.com/photo-1568849676085-51415703900f?q=80&w=800&auto=format&fit=crop" alt="Nymphenburg Rūmai" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-4 left-4 bg-stone-900/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full">Architektūra</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-serif text-xl font-bold text-stone-900 mb-2 group-hover:text-bavaria-blue transition-colors">Nymphenburg Rūmai</h3>
+                            <p class="text-stone-600 text-sm leading-relaxed mb-4">
+                                Baroko stiliaus vasaros rezidencija su nepriekaištingais parkais, kanalais ir karališkaisiais apartamentais.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-stone-200 flex justify-between items-center text-xs text-stone-500">
+                            <span><i class="fa-solid fa-ticket mr-1"></i> Įėjimas su bilietu</span>
+                            <span class="text-bavaria-blue font-semibold">Žiūrėti žemėlapyje &rarr;</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Objektai 3 -->
+                <div class="group bg-stone-50 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100 flex flex-col">
+                    <div class="relative overflow-hidden h-60">
+                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop" alt="BMW Muziejus" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-4 left-4 bg-stone-900/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full">Technologijos</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-serif text-xl font-bold text-stone-900 mb-2 group-hover:text-bavaria-blue transition-colors">BMW Welt & Muziejus</h3>
+                            <p class="text-stone-600 text-sm leading-relaxed mb-4">
+                                Futuristinis pastatas ir muziejus, pristatantis automobilių pramonės istoriją, dabartį bei ateities visatą.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-stone-200 flex justify-between items-center text-xs text-stone-500">
+                            <span><i class="fa-solid fa-car mr-1"></i> Modernios ekspozicijos</span>
+                            <span class="text-bavaria-blue font-semibold">Žiūrėti žemėlapyje &rarr;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kultūra ir Maistas -->
+    <section id="culture" class="py-24 bg-stone-900 text-white relative overflow-hidden">
+        <!-- Fono akcentai -->
+        <div class="absolute top-0 right-0 -translate-y-12 translate-x-12 w-96 h-96 bg-bavaria-blue/20 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 translate-y-12 -translate-x-12 w-96 h-96 bg-amber-400/15 rounded-full blur-3xl"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-bavaria-accent font-bold tracking-widest text-xs uppercase block mb-2">Tradicijos</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold mb-4">Bavariška Gastronomija ir Dvasia</h2>
+                <p class="text-stone-400">Pajuskite tikrąją Miuncheno skonį – nuo tradicinių dešrelių iki pasaulinio lygio festivalių.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-stone-800/60 p-8 rounded-2xl border border-stone-700/50 backdrop-blur-sm">
+                    <div class="w-14 h-14 bg-amber-400/20 rounded-xl flex items-center justify-center text-amber-300 text-2xl mb-6">
+                        <i class="fa-solid fa-beer-mug-empty"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold mb-3">Oktoberfest</h3>
+                    <p class="text-stone-400 text-sm leading-relaxed">
+                        Didžiausia pasaulyje liaudies šventė, sutraukianti milijonus lankytojų. Čia liejasi tradicinis alus, skamba bavariška muzika ir puoselėjami liaudies rūbai (Lederhosen ir Dirndl).
+                    </p>
+                </div>
+
+                <div class="bg-stone-800/60 p-8 rounded-2xl border border-stone-700/50 backdrop-blur-sm">
+                    <div class="w-14 h-14 bg-bavaria-blue/30 rounded-xl flex items-center justify-center text-bavaria-accent text-2xl mb-6">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold mb-3">Viktualienmarkt</h3>
+                    <p class="text-stone-400 text-sm leading-relaxed">
+                        Istorinis turgus miesto centre, kuriame rasite šviežių vietinių produktų, Weißwurst (baltųjų dešrelių), riestainių (Brezeln) ir autentiškų užkandžių.
+                    </p>
+                </div>
+
+                <div class="bg-stone-800/60 p-8 rounded-2xl border border-stone-700/50 backdrop-blur-sm">
+                    <div class="w-14 h-14 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 text-2xl mb-6">
+                        <i class="fa-solid fa-tree"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold mb-3">Anglų Sodo Parkas</h3>
+                    <p class="text-stone-400 text-sm leading-relaxed">
+                        Vienas didžiausių miesto parkų pasaulyje (didesnis už Niujorko Central Park). Čia galite pamatyti net banglenčių mėgėjus Eisbach upės bangoje!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galerija -->
+    <section id="gallery" class="py-24 bg-stone-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-bavaria-blue font-bold tracking-widest text-xs uppercase block mb-2">Akimirkos</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 mb-4">Miuncheno Nuotraukose</h2>
+                <p class="text-stone-600">Žvilgsnis į miesto gyvenimą, kultūrą bei grožį.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="overflow-hidden rounded-2xl h-64 group">
+                    <img src="https://images.unsplash.com/photo-1595867818082-083862f3d630?q=80&w=600&auto=format&fit=crop" alt="Miunchenas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="overflow-hidden rounded-2xl h-64 group">
+                    <img src="https://images.unsplash.com/photo-1577495508048-b635879837f1?q=80&w=600&auto=format&fit=crop" alt="Marienplatz" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="overflow-hidden rounded-2xl h-64 group">
+                    <img src="https://images.unsplash.com/photo-1568849676085-51415703900f?q=80&w=600&auto=format&fit=crop" alt="Rūmai" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="overflow-hidden rounded-2xl h-64 group">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=600&auto=format&fit=crop" alt="BMW" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kontaktai / Prenumerata / Planavimas -->
+    <section id="contact" class="py-24 bg-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-br from-bavaria-blue to-stone-900 rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden">
+                <div class="relative z-10 max-w-2xl">
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold mb-4">Pasiruošę aplankyti Miuncheną?</h2>
+                    <p class="text-emerald-100 mb-8 font-light">
+                        Gaukite išsamų kelionės vadovą, geriausius maršrutus ir nuolaidas viešbučiams tiesiai į savo el. paštą.
+                    </p>
+                    
+                    <form id="subscribe-form" class="flex flex-col sm:flex-row gap-3">
+                        <input type="email" placeholder="Įveskite savo el. paštą" required class="px-5 py-4 rounded-full text-stone-900 focus:outline-none focus:ring-2 focus:ring-amber-300 flex-1 text-sm">
+                        <button type="submit" class="bg-amber-300 hover:bg-amber-200 text-stone-900 font-bold px-8 py-4 rounded-full transition-colors text-sm whitespace-nowrap">
+                            Gauti Gidą
+                        </button>
+                    </form>
+                    <div id="form-message" class="mt-4 text-sm text-emerald-300 hidden">
+                        Ačiū! Kelionės gidas išsiųstas į jūsų el. paštą.
+                    </div>
+                </div>
+
+                <!-- Dekoras -->
+                <i class="fa-solid fa-compass absolute -right-10 -bottom-10 text-white/10 text-[260px] pointer-events-none"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Citatų / Atsiliepimų sekcija -->
+    <section class="py-16 bg-stone-50 border-t border-stone-200">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <i class="fa-solid fa-quote-left text-4xl text-bavaria-blue/30 mb-4 block"></i>
+            <p class="font-serif text-xl sm:text-2xl text-stone-800 italic mb-6">
+                "Miunchenas nėra tik miestas Vokietijoje – tai gyvenimo būdas, kuriame tradicijos ir ateitis žengia koja kojon."
+            </p>
+            <span class="text-sm font-semibold text-stone-500 uppercase tracking-widest">— Kelionių Žurnalas</span>
+        </div>
+    </section>
+
+    <!-- Pėdos sekcija (Footer) -->
+    <footer class="bg-stone-900 text-stone-400 py-12 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-bavaria-blue flex items-center justify-center font-bold text-white text-sm">
+                        M
+                    </div>
+                    <span class="font-serif text-xl font-bold text-white tracking-wide">MÜNCHEN</span>
+                </div>
+
+                <div class="flex space-x-6 text-sm">
+                    <a href="#about" class="hover:text-white transition-colors">Apie</a>
+                    <a href="#attractions" class="hover:text-white transition-colors">Vietos</a>
+                    <a href="#culture" class="hover:text-white transition-colors">Kultūra</a>
+                    <a href="#gallery" class="hover:text-white transition-colors">Galerija</a>
+                </div>
+
+                <div class="flex space-x-4 text-lg">
+                    <a href="#" class="w-9 h-9 rounded-full bg-stone-800 flex items-center justify-center hover:bg-bavaria-blue hover:text-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-stone-800 flex items-center justify-center hover:bg-bavaria-blue hover:text-white transition-colors"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="w-9 h-9 rounded-full bg-stone-800 flex items-center justify-center hover:bg-bavaria-blue hover:text-white transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-8 border-t border-stone-800 text-center text-xs text-stone-600">
+                &copy; 2026 Miuncheno Turizmo Informacija. Visos teisės saugomos. Sukurta naudojant HTML & Tailwind CSS.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Skriptas mobiliajam meniu ir formai -->
+    <script>
+        // Mobilus meniu
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Formos pateikimas (be puslapio perkrovimo)
+        const form = document.getElementById('subscribe-form');
+        const message = document.getElementById('form-message');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            messanezge.classList.remove('hidden');
+            form.reset();
+            setTimeout(() => {
+                message.classList.add('hidden');
+            }, 5000);
+        });
+
+        // Navigacijos fono pasikeitimas slenkant
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body>
+</html>
