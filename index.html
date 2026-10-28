@@ -1,440 +1,487 @@
 <!DOCTYPE html>
-<html lang="lt" class="scroll-smooth">
+<html lang="lt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atradimų Miunchenas - Bavarijos Širdis</title>
+    <title>Moderni Daugiažingsnė Forma</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter & Playfair Display -->
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Kortelės pasirinkimo stilius naudojant radio inputs */
+        .option-card input[type="radio"]:checked + .option-content {
+            border-color: #6366f1;
+            background-color: #f5f3ff;
+            box-shadow: 0 4px 12px -2px rgba(99, 102, 241, 0.15);
+        }
+        .option-card input[type="radio"]:checked + .option-content .check-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .option-card input[type="radio"]:checked + .option-content .card-icon {
+            color: #4f46e5;
+        }
+        /* Švelnūs žingsnių perėjimai */
+        .step-panel {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .step-panel.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8">
+
+    <div class="w-full max-w-2xl bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+        
+        <!-- Viršutinė antraštė ir progreso juosta -->
+        <div class="bg-gradient-to-r from-indigo-600 to-violet-600 p-6 sm:p-8 text-white">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-indigo-200">Projekto užklausa</span>
+                    <h1 class="text-xl sm:text-2xl font-bold mt-1">Planuokite savo projektą</h1>
+                </div>
+                <div class="text-right">
+                    <span id="step-indicator" class="text-sm font-medium bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm"> Žingsnis 1 iš 4 </span>
+                </div>
+            </div>
+
+            <!-- Progreso indikatorius -->
+            <div class="w-full bg-white/20 h-2 rounded-full overflow-hidden backdrop-blur-sm">
+                <div id="progress-bar" class="bg-white h-full w-1/4 transition-all duration-300 ease-out"></div>
+            </div>
+            
+            <!-- Žingsnių taškai (Desktops) -->
+            <div class="hidden sm:flex justify-between mt-4 text-xs font-medium text-indigo-100">
+                <span id="step-dot-1" class="font-bold text-white">1. Paslauga</span>
+                <span id="step-dot-2" class="opacity-70">2. Biudžetas</span>
+                <span id="step-dot-3" class="opacity-70">3. Terminas</span>
+                <span id="step-dot-4" class="opacity-70">4. Kontaktai</span>
+            </div>
+        </div>
+
+        <!-- Formos turinys -->
+        <form id="multi-step-form" class="p-6 sm:p-8" onsubmit="event.preventDefault();">
+            
+            <!-- ŽINGSNIS 1: Paslaugos pasirinkimas -->
+            <div class="step-panel active" data-step="1">
+                <h2 class="text-lg sm:text-xl font-bold text-slate-800 mb-1">Kokia paslauga jums reikalinga?</h2>
+                <p class="text-slate-500 text-sm mb-6">Pasirinkite vieną iš žemiau pateiktų galimybių.</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Kortelė 1 -->
+                    <label class="option-card cursor-pointer block">
+                        <input type="radio" name="service" value="website" class="hidden" checked>
+                        <div class="option-content relative border-2 border-slate-200 rounded-2xl p-5 transition-all duration-200 hover:border-indigo-300">
+                            <div class="flex items-start justify-between">
+                                <div class="card-icon text-slate-500 p-2.5 bg-slate-100 rounded-xl mb-3 transition-colors">
+                                    <i data-lucide="layout"></i>
+                                </div>
+                                <div class="check-icon opacity-0 scale-75 transition-all text-indigo-600 bg-indigo-50 p-1 rounded-full">
+                                    <i data-lucide="check" class="w-4 h-4"></i>
+                                </div>
+                            </div>
+                            <h3 class="font-semibold text-slate-800">Svetainių kūrimas</h3>
+                            <p class="text-xs text-slate-500 mt-1">Reprezentacinės svetainės, el. parduotuvės ir unikalūs sprendimai.</p>
+                        </div>
+                    </label>
+
+                    <!-- Kortelė 2 -->
+                    <label class="option-card cursor-pointer block">
+                        <input type="radio" name="service" value="design" class="hidden">
+                        <div class="option-content relative border-2 border-slate-200 rounded-2xl p-5 transition-all duration-200 hover:border-indigo-300">
+                            <div class="flex items-start justify-between">
+                                <div class="card-icon text-slate-500 p-2.5 bg-slate-100 rounded-xl mb-3 transition-colors">
+                                    <i data-lucide="palette"></i>
+                                </div>
+                                <div class="check-icon opacity-0 scale-75 transition-all text-indigo-600 bg-indigo-50 p-1 rounded-full">
+                                    <i data-lucide="check" class="w-4 h-4"></i>
+                                </div>
+                            </div>
+                            <h3 class="font-semibold text-slate-800">UI/UX Dizainas</h3>
+                            <p class="text-xs text-slate-500 mt-1">Mobilių programėlių bei web sistemų prototipai ir dizainas.</p>
+                        </div>
+                    </label>
+
+                    <!-- Kortelė 3 -->
+                    <label class="option-card cursor-pointer block">
+                        <input type="radio" name="service" value="seo" class="hidden">
+                        <div class="option-content relative border-2 border-slate-200 rounded-2xl p-5 transition-all duration-200 hover:border-indigo-300">
+                            <div class="flex items-start justify-between">
+                                <div class="card-icon text-slate-500 p-2.5 bg-slate-100 rounded-xl mb-3 transition-colors">
+                                    <i data-lucide="trending-up"></i>
+                                </div>
+                                <div class="check-icon opacity-0 scale-75 transition-all text-indigo-600 bg-indigo-50 p-1 rounded-full">
+                                    <i data-lucide="check" class="w-4 h-4"></i>
+                                </div>
+                            </div>
+                            <h3 class="font-semibold text-slate-800">SEO & Rinkodara</h3>
+                            <p class="text-xs text-slate-500 mt-1">Optimizavimas paieškos sistemoms ir Google reklama.</p>
+                        </div>
+                    </label>
+
+                    <!-- Kortelė 4 -->
+                    <label class="option-card cursor-pointer block">
+                        <input type="radio" name="service" value="consulting" class="hidden">
+                        <div class="option-content relative border-2 border-slate-200 rounded-2xl p-5 transition-all duration-200 hover:border-indigo-300">
+                            <div class="flex items-start justify-between">
+                                <div class="card-icon text-slate-500 p-2.5 bg-slate-100 rounded-xl mb-3 transition-colors">
+                                    <i data-lucide="message-square"></i>
+                                </div>
+                                <div class="check-icon opacity-0 scale-75 transition-all text-indigo-600 bg-indigo-50 p-1 rounded-full">
+                                    <i data-lucide="check" class="w-4 h-4"></i>
+                                </div>
+                            </div>
+                            <h3 class="font-semibold text-slate-800">Konsultacija</h3>
+                            <p class="text-xs text-slate-500 mt-1">Techninės konsultacijos ir auditai jūsų projektui.</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- ŽINGSNIS 2: Biudžeto pasirinkimas -->
+            <div class="step-panel" data-step="2">
+                <h2 class="text-lg sm:text-xl font-bold text-slate-800 mb-1">Koks jūsų numatomas biudžetas?</h2>
+                <p class="text-slate-500 text-sm mb-6">Tai padės mums pasiūlyti tinkamiausią sprendimą.</p>
+
+                <div class="space-y-3">
+                    <label class="option-card cursor-pointer block">
+                        <input type="radio" name="budget" value="small" class="hidden" checked>
+                        <div class="option-content flex items-center justify-between border-2 border-slate-200 rounded-2xl p-4 transition-all duration-200 hover:border-indigo-300">
+                            <div class="flex items-center space-x-3">
+                                <div class="card-icon text-slate-500 p-2 bg-slate-100 rounded-lg">
+                                    <i data-lucide="wallet"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-slate-800">Iki 1 000 €</h3>
+                                    <p class="text-xs text-slate-500">Pradiniams projektams ir mažoms svetainėms</p>
+                                </div>
+                            </div>
+                            <div class="check-icon opacity-0 scale-75 transition-all text-indigo-600 bg-indigo-50 p-1 rounded-full">
+                                <i data-lucide="check" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="option-card cursor-pointer block">
+                        <input type="radio" name="budget" value="medium" class="hidden">
+                        <div class="option-content flex items-center justify-between border-2 border-slate-200 rounded-2xl p-4 transition-all duration-200 hover:border-indigo-300">
+                            <div class="flex items-center space-x-3">
+                                <div class="card-icon text-slate-500 p-2 bg-slate-100 rounded-lg">
+                                    <i data-lucide="coins"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-slate-800">1 000 € – 3 000 €</h3>
+                                    <p class="text-xs text-slate-500">Vidutinio dydžio verslo sprendimams</p>
+                                </div>
+                            </div>
+                            <div class="check-icon opacity-0 scale-75 transition-all text-indigo-600 bg-indigo-50 p-1 rounded-full">
+                                <i data-lucide="check" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                    </label>
+
+                    <label class="option-card cursor-pointer block">
+                        <input type="radio" name="budget" value="large" class="hidden">
+                        <div class="option-content flex items-center justify-between border-2 border-slate-200 rounded-2xl p-4 transition-all duration-200 hover:border-indigo-300">
+                            <div class="flex items-center space-x-3">
+                                <div class="card-icon text-slate-500 p-2 bg-slate-100 rounded-lg">
+                                    <i data-lucide="gem"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-slate-800">Daugiau nei 3 000 €</h3>
+                                    <p class="text-xs text-slate-500">Sudėtingoms sistemoms ir el. komercijai</p>
+                                </div>
+                            </div>
+                            <div class="check-icon opacity-0 scale-75 transition-all text-indigo-600 bg-indigo-50 p-1 rounded-full">
+                                <i data-lucide="check" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- ŽINGSNIS 3: Terminas -->
+            <div class="step-panel" data-step="3">
+                <h2 class="text-lg sm:text-xl font-bold text-slate-800 mb-1">Kada reikia įgyvendinti projektą?</h2>
+                <p class="text-slate-500 text-sm mb-6">Pasirinkite sau tinkamą laiko rėmą.</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <label class="option-card cursor-pointer block">
+                        <input type="radio" name="timeline" value="urgent" class="hidden" checked>
+                        <div class="option-content border-2 border-slate-200 rounded-2xl p-4 text-center transition-all duration-200 hover:border-indigo-300">
+                            <div class="card-icon text-slate-500 p-2.5 bg-slate-100 rounded-xl w-fit mx-auto mb-2">
+                                <i data-lucide="zap"></i>
+                            </div>
+                            <h3 class="font-semibold text-slate-800 text-sm">Skubiai</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Iki 2 savaičių</p>
+                        </div>
+                    </label>
+
+                    <label class="option-card cursor-pointer block">
+                        <input type="radio" name="timeline" value="standard" class="hidden">
+                        <div class="option-content border-2 border-slate-200 rounded-2xl p-4 text-center transition-all duration-200 hover:border-indigo-300">
+                            <div class="card-icon text-slate-500 p-2.5 bg-slate-100 rounded-xl w-fit mx-auto mb-2">
+                                <i data-lucide="clock"></i>
+                            </div>
+                            <h3 class="font-semibold text-slate-800 text-sm">Standartiškai</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">1 - 2 mėnesiai</p>
+                        </div>
+                    </label>
+
+                    <label class="option-card cursor-pointer block">
+                        <input type="radio" name="timeline" value="flexible" class="hidden">
+                        <div class="option-content border-2 border-slate-200 rounded-2xl p-4 text-center transition-all duration-200 hover:border-indigo-300">
+                            <div class="card-icon text-slate-500 p-2.5 bg-slate-100 rounded-xl w-fit mx-auto mb-2">
+                                <i data-lucide="calendar"></i>
+                            </div>
+                            <h3 class="font-semibold text-slate-800 text-sm">Neskubiai</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Lankstus grafikas</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- ŽINGSNIS 4: Kontaktai ir patvirtinimas -->
+            <div class="step-panel" data-step="4">
+                <h2 class="text-lg sm:text-xl font-bold text-slate-800 mb-1">Jūsų kontaktiniai duomenys</h2>
+                <p class="text-slate-500 text-sm mb-6">Įveskite duomenis, kad galėtume su jumis susisiekti.</p>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="fullname" class="block text-xs font-semibold text-slate-600 uppercase mb-1">Vardas Pavardė *</label>
+                        <div class="relative">
+                            <i data-lucide="user" class="absolute left-3.5 top-3 w-5 h-5 text-slate-400"></i>
+                            <input type="text" id="fullname" name="fullname" required placeholder="Vardenis Pavardenis" class="w-full pl-11 pr-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 text-slate-800 text-sm transition-all">
+                        </div>
+                        <p id="error-name" class="text-rose-500 text-xs mt-1 hidden">Prašome įvesti savo vardą.</p>
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-xs font-semibold text-slate-600 uppercase mb-1">El. paštas *</label>
+                        <div class="relative">
+                            <i data-lucide="mail" class="absolute left-3.5 top-3 w-5 h-5 text-slate-400"></i>
+                            <input type="email" id="email" name="email" required placeholder="vardenis@pavyzdys.lt" class="w-full pl-11 pr-4 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 text-slate-800 text-sm transition-all">
+                        </div>
+                        <p id="error-email" class="text-rose-500 text-xs mt-1 hidden">Prašome įvesti galiojantį el. pašto adresą.</p>
+                    </div>
+
+                    <div>
+                        <label for="notes" class="block text-xs font-semibold text-slate-600 uppercase mb-1">Papildoma informacija (nebūtina)</label>
+                        <textarea id="notes" name="notes" rows="3" placeholder="Trumpai aprašykite savo idėją..." class="w-full p-3 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 text-slate-800 text-sm transition-all resize-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SĖKMĖS PRANEŠIMAS (Paslėptas pagal nutylėjimą) -->
+            <div id="success-panel" class="hidden text-center py-8">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Užklausa gauta!</h2>
+                <p class="text-slate-500 text-sm max-w-md mx-auto mb-6">Ačiū! Mes peržiūrėsime jūsų pateiktus duomenis ir susisieksime su jumis per 24 valandas.</p>
+                <button type="button" onclick="resetForm()" class="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-sm transition-colors">
+                    Pateikti naują užklausą
+                </button>
+            </div>
+
+            <!-- Navigacijos Mygtukai -->
+            <div id="navigation-buttons" class="flex items-center justify-between mt-8 pt-6 border-t border-slate-100">
+                <button type="button" id="prev-btn" class="inline-flex items-center space-x-2 px-5 py-2.5 border border-slate-200 text-slate-600 font-semibold rounded-xl text-sm hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Atgal</span>
+                </button>
+                
+                <button type="button" id="next-btn" class="inline-flex items-center space-x-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm transition-colors shadow-lg shadow-indigo-200">
+                    <span>Toliau</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+
+                <button type="submit" id="submit-btn" class="hidden inline-flex items-center space-x-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-sm transition-colors shadow-lg shadow-emerald-200 disabled:opacity-60 disabled:cursor-not-allowed">
+                    <span>Siųsti</span>
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <p id="submit-error" class="hidden text-rose-500 text-sm mt-3 text-right">Nepavyko išsiųsti užklausos. Bandykite dar kartą.</p>
+
+        </form>
+    </div>
+
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
+        // Formos būsenos valdymas
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        // Elementai
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const stepIndicator = document.getElementById('step-indicator');
+        const navButtons = document.getElementById('navigation-buttons');
+        const successPanel = document.getElementById('success-panel');
+        const form = document.getElementById('multi-step-form');
+        const submitError = document.getElementById('submit-error');
+        const WEBHOOK_URL = 'https://primary-production-f0706.up.railway.app/webhook/819f3d88-c9bf-4147-adfb-ed7eba781f7a';
+
+        // Inicializacija
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            updateStepDisplay();
+        });
+
+        // Mygtukų įvykiai
+        nextBtn.addEventListener('click', () => {
+            if (validateStep(currentStep)) {
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    updateStepDisplay();
+                }
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepDisplay();
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!validateStep(currentStep)) return;
+
+            const formData = new FormData(form);
+            const payload = Object.fromEntries(formData.entries());
+
+            submitBtn.disabled = true;
+            submitError.classList.add('hidden');
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
                     },
-                    colors: {
-                        bavaria: {
-                            blue: '#0d6e56',
-                            dark: '#12201c',
-                            gold: '#d4a017',
-                            accent: '#5eead4'
-                        }
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                document.querySelectorAll('.step-panel').forEach(panel => panel.classList.remove('active'));
+                navButtons.classList.add('hidden');
+                successPanel.classList.remove('hidden');
+            } catch (error) {
+                console.error('Webhook klaida:', error);
+                submitError.classList.remove('hidden');
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Žingsnio atvaizdavimo atnaujinimas
+        function updateStepDisplay() {
+            // Rodome tik aktyvų panelį
+            document.querySelectorAll('.step-panel').forEach(panel => {
+                const step = parseInt(panel.getAttribute('data-step'));
+                if (step === currentStep) {
+                    panel.classList.add('active');
+                } else {
+                    panel.classList.remove('active');
+                }
+            });
+
+            // Atnaujiname progreso juostą
+            const progressPercentage = (currentStep / totalSteps) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+            stepIndicator.textContent = `Žingsnis ${currentStep} iš ${totalSteps}`;
+
+            // Valdome mygtukų matomumą
+            prevBtn.disabled = currentStep === 1;
+
+            if (currentStep === totalSteps) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+
+            // Atnaujiname viršutinius indikatorius (Desktops)
+            for (let i = 1; i <= totalSteps; i++) {
+                const dot = document.getElementById(`step-dot-${i}`);
+                if (dot) {
+                    if (i <= currentStep) {
+                        dot.classList.add('font-bold', 'text-white');
+                        dot.classList.remove('opacity-70');
+                    } else {
+                        dot.classList.remove('font-bold', 'text-white');
+                        dot.classList.add('opacity-70');
                     }
                 }
             }
         }
-    </script>
-    <style>
-        .hero-bg {
-            background: linear-gradient(rgba(18, 32, 28, 0.55), rgba(18, 32, 28, 0.75)), 
-                        url('https://images.unsplash.com/photo-1595867818082-083862f3d630?q=80&w=1920&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-    </style>
-</head>
-<body class="bg-stone-50 text-stone-800 font-sans antialiased selection:bg-bavaria-blue selection:text-white">
 
-    <!-- Navigacija -->
-    <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-stone-900/90 backdrop-blur-md border-b border-stone-800 text-white" id="navbar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full bg-bavaria-blue flex items-center justify-center font-bold text-xl text-white shadow-lg border-2 border-white/20">
-                        M
-                    </div>
-                    <span class="font-serif text-2xl font-bold tracking-wide">MÜNCHEN</span>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8 text-sm font-medium">
-                        <a href="#about" class="hover:text-bavaria-accent transition-colors py-2">Apie Miestą</a>
-                        <a href="#attractions" class="hover:text-bavaria-accent transition-colors py-2">Lankytinos Vietos</a>
-                        <a href="#culture" class="hover:text-bavaria-accent transition-colors py-2">Kultūra ir Tradicijos</a>
-                        <a href="#gallery" class="hover:text-bavaria-accent transition-colors py-2">Galerija</a>
-                        <a href="#contact" class="bg-bavaria-blue hover:bg-emerald-800 text-white px-5 py-2.5 rounded-full shadow-md hover:shadow-lg transition-all">Planuoti Kelionę</a>
-                    </div>
-                </div>
-                <!-- Mobilus mygtukas -->
-                <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="p-2 rounded-md text-stone-300 hover:text-white hover:bg-stone-800 focus:outline-none">
-                        <i class="fa-solid fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+        // Paprasta įvesties validacija
+        function validateStep(step) {
+            let isValid = true;
 
-        <!-- Mobilus meniu -->
-        <div class="md:hidden hidden bg-stone-900 border-b border-stone-800 px-4 pt-2 pb-6 space-y-3" id="mobile-menu">
-            <a href="#about" class="block text-stone-300 hover:text-white py-2">Apie Miestą</a>
-            <a href="#attractions" class="block text-stone-300 hover:text-white py-2">Lankytinos Vietos</a>
-            <a href="#culture" class="block text-stone-300 hover:text-white py-2">Kultūra ir Tradicijos</a>
-            <a href="#gallery" class="block text-stone-300 hover:text-white py-2">Galerija</a>
-            <a href="#contact" class="block bg-bavaria-blue text-white text-center py-2.5 rounded-full mt-4">Planuoti Kelionę</a>
-        </div>
-    </nav>
+            if (step === 4) {
+                const nameInput = document.getElementById('fullname');
+                const emailInput = document.getElementById('email');
+                const errorName = document.getElementById('error-name');
+                const errorEmail = document.getElementById('error-email');
 
-    <!-- Hero Sekcija -->
-    <header class="hero-bg min-h-screen flex items-center justify-center relative pt-20">
-        <div class="max-w-5xl mx-auto px-4 text-center text-white z-10 py-16">
-            <span class="inline-block bg-bavaria-blue/80 backdrop-blur-md text-white text-xs md:text-sm uppercase tracking-widest px-4 py-1.5 rounded-full mb-6 font-semibold border border-white/20">
-                Bavarijos Sostinė &bull; Vokietija
-            </span>
-            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
-                Patirkite Tradicijų ir <br class="hidden sm:inline"/><span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-teal-100 to-amber-200">Inovacijų Harmoniją</span>
-            </h1>
-            <p class="text-lg sm:text-xl md:text-2xl text-stone-200 max-w-3xl mx-auto mb-10 font-light leading-relaxed">
-                Nuo didingų Marienplatz aikštės bokštų iki gyvybingų alaus sodų ir Alpių panoramų. Miunchenas laukia jūsų su atviromis rankomis.
-            </p>
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#attractions" class="w-full sm:w-auto bg-bavaria-blue hover:bg-emerald-800 text-white font-medium px-8 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
-                    <span>Atskleisti Miestą</span>
-                    <i class="fa-solid fa-arrow-down"></i>
-                </a>
-                <a href="#contact" class="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 font-medium px-8 py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-2">
-                    <i class="fa-regular fa-compass"></i>
-                    <span>Kelionės Gidas</span>
-                </a>
-            </div>
-        </div>
+                // Vardo validacija
+                if (!nameInput.value.trim()) {
+                    errorName.classList.remove('hidden');
+                    nameInput.classList.add('border-rose-500');
+                    isValid = false;
+                } else {
+                    errorName.classList.add('hidden');
+                    nameInput.classList.remove('border-rose-500');
+                }
 
-        <!-- Slinkimo indikatorius -->
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60 animate-bounce text-center hidden sm:block">
-            <span class="text-xs uppercase tracking-widest block mb-1">Slinkti žemyn</span>
-            <i class="fa-solid fa-chevron-down"></i>
-        </div>
-    </header>
-
-    <!-- Statisitka / Trumpi Faktai -->
-    <section class="bg-white py-12 border-b border-stone-100 shadow-sm relative z-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div class="p-4">
-                    <p class="font-serif text-3xl sm:text-4xl font-bold text-bavaria-blue mb-1">1.5M+</p>
-                    <p class="text-stone-500 text-sm font-medium uppercase tracking-wider">Gyventojų</p>
-                </div>
-                <div class="p-4">
-                    <p class="font-serif text-3xl sm:text-4xl font-bold text-bavaria-blue mb-1">1158 m.</p>
-                    <p class="text-stone-500 text-sm font-medium uppercase tracking-wider">Miesto įkūrimas</p>
-                </div>
-                <div class="p-4">
-                    <p class="font-serif text-3xl sm:text-4xl font-bold text-bavaria-blue mb-1">6 mln.</p>
-                    <p class="text-stone-500 text-sm font-medium uppercase tracking-wider">Oktoberfest lankytojų</p>
-                </div>
-                <div class="p-4">
-                    <p class="font-serif text-3xl sm:text-4xl font-bold text-bavaria-blue mb-1">375 ha</p>
-                    <p class="text-stone-500 text-sm font-medium uppercase tracking-wider">Anglų Sodo plotas</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Apie Miuncheną -->
-    <section id="about" class="py-24 bg-stone-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div>
-                    <span class="text-bavaria-blue font-bold tracking-widest text-xs uppercase block mb-2">Apie Bavarijos Sostinę</span>
-                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 mb-6 leading-tight">
-                        Miestas, kuris derina karališką didybę ir šiuolaikinį gyvenimo būdą
-                    </h2>
-                    <p class="text-stone-600 mb-6 leading-relaxed">
-                        Miunchenas – tai Vokietijos trečias pagal dydį miestas, įsikūręs vaizdingoje Izaro upės pakrantėje prie pat Alpių papėdės. Šis miestas garsėja ne tik savo turtinga istorija, architektūra ir muziejais, bet ir ypatinga gyvenimo kokybe bei jaukia atmosferai, dažnai vadinama <em>"Gemütlichkeit"</em>.
-                    </p>
-                    <p class="text-stone-600 mb-8 leading-relaxed">
-                        Čia dera viskas: pasaulinio lygio technologijų bendrovės, tokios kaip BMW ir Siemens, bei šimtametės aludarystės tradicijos, gyvuojančios turgavietėse ir parkuose.
-                    </p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="flex items-start space-x-3 p-3 rounded-xl bg-white shadow-sm border border-stone-100">
-                            <i class="fa-solid fa-beer-mug-empty text-bavaria-blue text-xl mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold text-stone-900 text-sm">Gili kultūra</h4>
-                                <p class="text-xs text-stone-500">Tradiciniai alaus sodai ir šventės</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start space-x-3 p-3 rounded-xl bg-white shadow-sm border border-stone-100">
-                            <i class="fa-solid fa-mountain text-bavaria-blue text-xl mt-1"></i>
-                            <div>
-                                <h4 class="font-semibold text-stone-900 text-sm">Alpių Kaimynystė</h4>
-                                <p class="text-xs text-stone-500">Nuostabūs vaizdai ir gamtos pramogos</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative">
-                    <div class="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-                        <img src="https://images.unsplash.com/photo-1577495508048-b635879837f1?q=80&w=1000&auto=format&fit=crop" alt="Marienplatz ir Rotušė" class="w-full h-[480px] object-cover">
-                    </div>
-                    <!-- Dekoratyvus elementas -->
-                    <div class="absolute -bottom-6 -left-6 w-64 h-64 bg-bavaria-blue/10 rounded-3xl -z-0"></div>
-                    <div class="absolute -top-6 -right-6 w-48 h-48 bg-amber-300/15 rounded-3xl -z-0"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Top Lankytinos Vietos -->
-    <section id="attractions" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-bavaria-blue font-bold tracking-widest text-xs uppercase block mb-2">Objektai</span>
-                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 mb-4">Pagrindinės Miuncheno Vietos</h2>
-                <p class="text-stone-600">Atradimai, kurių negalite praleisti lankydamiesi Bavarijos sostinėje.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Objektai 1 -->
-                <div class="group bg-stone-50 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100 flex flex-col">
-                    <div class="relative overflow-hidden h-60">
-                        <img src="https://images.unsplash.com/photo-1595867818082-083862f3d630?q=80&w=800&auto=format&fit=crop" alt="Marienplatz" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <span class="absolute top-4 left-4 bg-stone-900/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full">Istorinis Centras</span>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h3 class="font-serif text-xl font-bold text-stone-900 mb-2 group-hover:text-bavaria-blue transition-colors">Marienplatz Aikštė</h3>
-                            <p class="text-stone-600 text-sm leading-relaxed mb-4">
-                                Miesto širdis su didinga Naująja rotuše (Neues Rathaus) ir garsiuoju Glockenspiel laikrodžio šou, vykstančiu kasdien.
-                            </p>
-                        </div>
-                        <div class="pt-4 border-t border-stone-200 flex justify-between items-center text-xs text-stone-500">
-                            <span><i class="fa-regular fa-clock mr-1"></i> Nemokamas lankymas</span>
-                            <span class="text-bavaria-blue font-semibold">Žiūrėti žemėlapyje &rarr;</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Objektai 2 -->
-                <div class="group bg-stone-50 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100 flex flex-col">
-                    <div class="relative overflow-hidden h-60">
-                        <img src="https://images.unsplash.com/photo-1568849676085-51415703900f?q=80&w=800&auto=format&fit=crop" alt="Nymphenburg Rūmai" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <span class="absolute top-4 left-4 bg-stone-900/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full">Architektūra</span>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h3 class="font-serif text-xl font-bold text-stone-900 mb-2 group-hover:text-bavaria-blue transition-colors">Nymphenburg Rūmai</h3>
-                            <p class="text-stone-600 text-sm leading-relaxed mb-4">
-                                Baroko stiliaus vasaros rezidencija su nepriekaištingais parkais, kanalais ir karališkaisiais apartamentais.
-                            </p>
-                        </div>
-                        <div class="pt-4 border-t border-stone-200 flex justify-between items-center text-xs text-stone-500">
-                            <span><i class="fa-solid fa-ticket mr-1"></i> Įėjimas su bilietu</span>
-                            <span class="text-bavaria-blue font-semibold">Žiūrėti žemėlapyje &rarr;</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Objektai 3 -->
-                <div class="group bg-stone-50 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100 flex flex-col">
-                    <div class="relative overflow-hidden h-60">
-                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop" alt="BMW Muziejus" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <span class="absolute top-4 left-4 bg-stone-900/80 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full">Technologijos</span>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h3 class="font-serif text-xl font-bold text-stone-900 mb-2 group-hover:text-bavaria-blue transition-colors">BMW Welt & Muziejus</h3>
-                            <p class="text-stone-600 text-sm leading-relaxed mb-4">
-                                Futuristinis pastatas ir muziejus, pristatantis automobilių pramonės istoriją, dabartį bei ateities visatą.
-                            </p>
-                        </div>
-                        <div class="pt-4 border-t border-stone-200 flex justify-between items-center text-xs text-stone-500">
-                            <span><i class="fa-solid fa-car mr-1"></i> Modernios ekspozicijos</span>
-                            <span class="text-bavaria-blue font-semibold">Žiūrėti žemėlapyje &rarr;</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Kultūra ir Maistas -->
-    <section id="culture" class="py-24 bg-stone-900 text-white relative overflow-hidden">
-        <!-- Fono akcentai -->
-        <div class="absolute top-0 right-0 -translate-y-12 translate-x-12 w-96 h-96 bg-bavaria-blue/20 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 left-0 translate-y-12 -translate-x-12 w-96 h-96 bg-amber-400/15 rounded-full blur-3xl"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-bavaria-accent font-bold tracking-widest text-xs uppercase block mb-2">Tradicijos</span>
-                <h2 class="font-serif text-3xl sm:text-4xl font-bold mb-4">Bavariška Gastronomija ir Dvasia</h2>
-                <p class="text-stone-400">Pajuskite tikrąją Miuncheno skonį – nuo tradicinių dešrelių iki pasaulinio lygio festivalių.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-stone-800/60 p-8 rounded-2xl border border-stone-700/50 backdrop-blur-sm">
-                    <div class="w-14 h-14 bg-amber-400/20 rounded-xl flex items-center justify-center text-amber-300 text-2xl mb-6">
-                        <i class="fa-solid fa-beer-mug-empty"></i>
-                    </div>
-                    <h3 class="font-serif text-xl font-bold mb-3">Oktoberfest</h3>
-                    <p class="text-stone-400 text-sm leading-relaxed">
-                        Didžiausia pasaulyje liaudies šventė, sutraukianti milijonus lankytojų. Čia liejasi tradicinis alus, skamba bavariška muzika ir puoselėjami liaudies rūbai (Lederhosen ir Dirndl).
-                    </p>
-                </div>
-
-                <div class="bg-stone-800/60 p-8 rounded-2xl border border-stone-700/50 backdrop-blur-sm">
-                    <div class="w-14 h-14 bg-bavaria-blue/30 rounded-xl flex items-center justify-center text-bavaria-accent text-2xl mb-6">
-                        <i class="fa-solid fa-utensils"></i>
-                    </div>
-                    <h3 class="font-serif text-xl font-bold mb-3">Viktualienmarkt</h3>
-                    <p class="text-stone-400 text-sm leading-relaxed">
-                        Istorinis turgus miesto centre, kuriame rasite šviežių vietinių produktų, Weißwurst (baltųjų dešrelių), riestainių (Brezeln) ir autentiškų užkandžių.
-                    </p>
-                </div>
-
-                <div class="bg-stone-800/60 p-8 rounded-2xl border border-stone-700/50 backdrop-blur-sm">
-                    <div class="w-14 h-14 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 text-2xl mb-6">
-                        <i class="fa-solid fa-tree"></i>
-                    </div>
-                    <h3 class="font-serif text-xl font-bold mb-3">Anglų Sodo Parkas</h3>
-                    <p class="text-stone-400 text-sm leading-relaxed">
-                        Vienas didžiausių miesto parkų pasaulyje (didesnis už Niujorko Central Park). Čia galite pamatyti net banglenčių mėgėjus Eisbach upės bangoje!
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Galerija -->
-    <section id="gallery" class="py-24 bg-stone-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-bavaria-blue font-bold tracking-widest text-xs uppercase block mb-2">Akimirkos</span>
-                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 mb-4">Miuncheno Nuotraukose</h2>
-                <p class="text-stone-600">Žvilgsnis į miesto gyvenimą, kultūrą bei grožį.</p>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="overflow-hidden rounded-2xl h-64 group">
-                    <img src="https://images.unsplash.com/photo-1595867818082-083862f3d630?q=80&w=600&auto=format&fit=crop" alt="Miunchenas" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                </div>
-                <div class="overflow-hidden rounded-2xl h-64 group">
-                    <img src="https://images.unsplash.com/photo-1577495508048-b635879837f1?q=80&w=600&auto=format&fit=crop" alt="Marienplatz" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                </div>
-                <div class="overflow-hidden rounded-2xl h-64 group">
-                    <img src="https://images.unsplash.com/photo-1568849676085-51415703900f?q=80&w=600&auto=format&fit=crop" alt="Rūmai" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                </div>
-                <div class="overflow-hidden rounded-2xl h-64 group">
-                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=600&auto=format&fit=crop" alt="BMW" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Kontaktai / Prenumerata / Planavimas -->
-    <section id="contact" class="py-24 bg-white">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-gradient-to-br from-bavaria-blue to-stone-900 rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden">
-                <div class="relative z-10 max-w-2xl">
-                    <h2 class="font-serif text-3xl sm:text-4xl font-bold mb-4">Pasiruošę aplankyti Miuncheną?</h2>
-                    <p class="text-emerald-100 mb-8 font-light">
-                        Gaukite išsamų kelionės vadovą, geriausius maršrutus ir nuolaidas viešbučiams tiesiai į savo el. paštą.
-                    </p>
-                    
-                    <form id="subscribe-form" class="flex flex-col sm:flex-row gap-3">
-                        <input type="email" placeholder="Įveskite savo el. paštą" required class="px-5 py-4 rounded-full text-stone-900 focus:outline-none focus:ring-2 focus:ring-amber-300 flex-1 text-sm">
-                        <button type="submit" class="bg-amber-300 hover:bg-amber-200 text-stone-900 font-bold px-8 py-4 rounded-full transition-colors text-sm whitespace-nowrap">
-                            Gauti Gidą
-                        </button>
-                    </form>
-                    <div id="form-message" class="mt-4 text-sm text-emerald-300 hidden">
-                        Ačiū! Kelionės gidas išsiųstas į jūsų el. paštą.
-                    </div>
-                </div>
-
-                <!-- Dekoras -->
-                <i class="fa-solid fa-compass absolute -right-10 -bottom-10 text-white/10 text-[260px] pointer-events-none"></i>
-            </div>
-        </div>
-    </section>
-
-    <!-- Citatų / Atsiliepimų sekcija -->
-    <section class="py-16 bg-stone-50 border-t border-stone-200">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <i class="fa-solid fa-quote-left text-4xl text-bavaria-blue/30 mb-4 block"></i>
-            <p class="font-serif text-xl sm:text-2xl text-stone-800 italic mb-6">
-                "Miunchenas nėra tik miestas Vokietijoje – tai gyvenimo būdas, kuriame tradicijos ir ateitis žengia koja kojon."
-            </p>
-            <span class="text-sm font-semibold text-stone-500 uppercase tracking-widest">— Kelionių Žurnalas</span>
-        </div>
-    </section>
-
-    <!-- Pėdos sekcija (Footer) -->
-    <footer class="bg-stone-900 text-stone-400 py-12 border-t border-stone-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-full bg-bavaria-blue flex items-center justify-center font-bold text-white text-sm">
-                        M
-                    </div>
-                    <span class="font-serif text-xl font-bold text-white tracking-wide">MÜNCHEN</span>
-                </div>
-
-                <div class="flex space-x-6 text-sm">
-                    <a href="#about" class="hover:text-white transition-colors">Apie</a>
-                    <a href="#attractions" class="hover:text-white transition-colors">Vietos</a>
-                    <a href="#culture" class="hover:text-white transition-colors">Kultūra</a>
-                    <a href="#gallery" class="hover:text-white transition-colors">Galerija</a>
-                </div>
-
-                <div class="flex space-x-4 text-lg">
-                    <a href="#" class="w-9 h-9 rounded-full bg-stone-800 flex items-center justify-center hover:bg-bavaria-blue hover:text-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" class="w-9 h-9 rounded-full bg-stone-800 flex items-center justify-center hover:bg-bavaria-blue hover:text-white transition-colors"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#" class="w-9 h-9 rounded-full bg-stone-800 flex items-center justify-center hover:bg-bavaria-blue hover:text-white transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
-                </div>
-            </div>
-
-            <div class="mt-8 pt-8 border-t border-stone-800 text-center text-xs text-stone-600">
-                &copy; 2026 Miuncheno Turizmo Informacija. Visos teisės saugomos. Sukurta naudojant HTML & Tailwind CSS.
-            </div>
-        </div>
-    </footer>
-
-    <!-- Skriptas mobiliajam meniu ir formai -->
-    <script>
-        // Mobilus meniu
-        const menuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Formos pateikimas (be puslapio perkrovimo)
-        const form = document.getElementById('subscribe-form');
-        const message = document.getElementById('form-message');
-
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            messanezge.classList.remove('hidden');
-            form.reset();
-            setTimeout(() => {
-                message.classList.add('hidden');
-            }, 5000);
-        });
-
-        // Navigacijos fono pasikeitimas slenkant
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                nav.classList.add('shadow-lg');
-            } else {
-                nav.classList.remove('shadow-lg');
+                // El. pašto validacija
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(emailInput.value.trim())) {
+                    errorEmail.classList.remove('hidden');
+                    emailInput.classList.add('border-rose-500');
+                    isValid = false;
+                } else {
+                    errorEmail.classList.add('hidden');
+                    emailInput.classList.remove('border-rose-500');
+                }
             }
-        });
+
+            return isValid;
+        }
+
+        // Formos nustatymas iš naujo
+        function resetForm() {
+            form.reset();
+            currentStep = 1;
+            successPanel.classList.add('hidden');
+            navButtons.classList.remove('hidden');
+            updateStepDisplay();
+        }
     </script>
 </body>
 </html>
