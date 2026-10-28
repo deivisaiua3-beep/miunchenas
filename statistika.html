@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Užklausų statistika</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .bar-fill { transition: width 0.5s ease; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen p-4 sm:p-6 md:p-8">
+    <div class="w-full max-w-6xl mx-auto">
+        <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+            <div class="bg-gradient-to-r from-indigo-600 to-violet-600 p-6 sm:p-8 text-white">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-indigo-200">Google Sheets · n8n</span>
+                        <h1 class="text-xl sm:text-2xl font-bold mt-1">Užklausų statistika</h1>
+                        <p id="updated-at" class="text-indigo-100 text-sm mt-1">Kraunama…</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <a href="index.html" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-white/15 hover:bg-white/25 rounded-xl text-sm font-semibold backdrop-blur-sm transition-colors">
+                            <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                            <span>Forma</span>
+                        </a>
+                        <button type="button" id="refresh-btn" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-white text-indigo-700 hover:bg-indigo-50 rounded-xl text-sm font-semibold transition-colors">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                            <span>Atnaujinti</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8">
+                <div id="loading-state" class="py-16 text-center">
+                    <div class="w-10 h-10 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin mx-auto mb-4"></div>
+                    <p class="text-slate-500 text-sm">Gaunami duomenys iš n8n…</p>
+                </div>
+
+                <div id="error-state" class="hidden py-12 text-center">
+                    <div class="w-14 h-14 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="alert-circle" class="w-7 h-7"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-800 mb-2">Nepavyko gauti statistikos</h2>
+                    <p id="error-message" class="text-slate-500 text-sm max-w-md mx-auto mb-6">Patikrinkite, ar n8n workflow yra aktyvus.</p>
+                    <button type="button" id="retry-btn" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-sm">Bandyti dar kartą</button>
+                </div>
+
+                <div id="empty-state" class="hidden py-12 text-center">
+                    <div class="w-14 h-14 bg-slate-100 text-slate-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i data-lucide="inbox" class="w-7 h-7"></i>
+                    </div>
+                    <h2 class="text-lg font-bold text-slate-800 mb-2">Dar nėra užklausų</h2>
+                    <p class="text-slate-500 text-sm">Kai forma išsiųs duomenis į Google Sheets, jie atsiras čia.</p>
+                </div>
+
+                <div id="dashboard" class="hidden space-y-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="rounded-2xl border border-slate-100 bg-slate-50 p-5">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Viso užklausų</p>
+                            <p id="kpi-total" class="text-3xl font-bold text-slate-800 mt-2">0</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-100 bg-slate-50 p-5">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Šiandien</p>
+                            <p id="kpi-today" class="text-3xl font-bold text-slate-800 mt-2">0</p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-100 bg-slate-50 p-5">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Populiariausia paslauga</p>
+                            <p id="kpi-top" class="text-xl font-bold text-slate-800 mt-2">—</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <section class="rounded-2xl border border-slate-100 p-5">
+                            <h2 class="font-bold text-slate-800 mb-4">Paslaugos</h2>
+                            <div id="chart-service" class="space-y-3"></div>
+                        </section>
+                        <section class="rounded-2xl border border-slate-100 p-5">
+                            <h2 class="font-bold text-slate-800 mb-4">Biudžetas</h2>
+                            <div id="chart-budget" class="space-y-3"></div>
+                        </section>
+                        <section class="rounded-2xl border border-slate-100 p-5">
+                            <h2 class="font-bold text-slate-800 mb-4">Terminas</h2>
+                            <div id="chart-timeline" class="space-y-3"></div>
+                        </section>
+                    </div>
+
+                    <section>
+                        <h2 class="font-bold text-slate-800 mb-4">Visos užklausos</h2>
+                        <div class="overflow-x-auto rounded-2xl border border-slate-100">
+                            <table class="min-w-full text-sm">
+                                <thead class="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                    <tr>
+                                        <th class="px-4 py-3">#</th>
+                                        <th class="px-4 py-3">Paslauga</th>
+                                        <th class="px-4 py-3">Biudžetas</th>
+                                        <th class="px-4 py-3">Terminas</th>
+                                        <th class="px-4 py-3">Komentaras</th>
+                                        <th class="px-4 py-3">Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rows-body" class="divide-y divide-slate-100 text-slate-700"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const WEBHOOK_URL = 'https://primary-production-f0706.up.railway.app/webhook/6b80ea58-7fb1-4610-a3f5-81f3a0a82396';
+
+        const SERVICE_LABELS = {
+            website: 'Svetainių kūrimas',
+            design: 'UI/UX Dizainas',
+            seo: 'SEO & Rinkodara',
+            consulting: 'Konsultacija'
+        };
+        const BUDGET_LABELS = {
+            small: 'Iki 1 000 €',
+            medium: '1 000 € – 3 000 €',
+            large: 'Daugiau nei 3 000 €'
+        };
+        const TIMELINE_LABELS = {
+            urgent: 'Skubiai',
+            standard: 'Standartiškai',
+            flexible: 'Neskubiai'
+        };
+
+        const loadingState = document.getElementById('loading-state');
+        const errorState = document.getElementById('error-state');
+        const emptyState = document.getElementById('empty-state');
+        const dashboard = document.getElementById('dashboard');
+        const errorMessage = document.getElementById('error-message');
+        const updatedAt = document.getElementById('updated-at');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            loadStats();
+        });
+
+        document.getElementById('refresh-btn').addEventListener('click', loadStats);
+        document.getElementById('retry-btn').addEventListener('click', loadStats);
+
+        function showOnly(el) {
+            [loadingState, errorState, emptyState, dashboard].forEach((node) => node.classList.add('hidden'));
+            el.classList.remove('hidden');
+        }
+
+        function normalizeRows(payload) {
+            if (Array.isArray(payload)) return payload;
+            if (payload && Array.isArray(payload.data)) return payload.data;
+            if (payload && Array.isArray(payload.rows)) return payload.rows;
+            return [];
+        }
+
+        function countBy(rows, key) {
+            return rows.reduce((acc, row) => {
+                const value = String(row[key] || '—');
+                acc[value] = (acc[value] || 0) + 1;
+                return acc;
+            }, {});
+        }
+
+        function labelOf(map, value) {
+            return map[value] || value || '—';
+        }
+
+        function renderBars(containerId, counts, labels, total) {
+            const container = document.getElementById(containerId);
+            const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+            if (!entries.length) {
+                container.innerHTML = '<p class="text-sm text-slate-500">Nėra duomenų.</p>';
+                return;
+            }
+
+            container.innerHTML = entries.map(([key, count]) => {
+                const pct = total ? Math.round((count / total) * 100) : 0;
+                return `
+                    <div>
+                        <div class="flex items-center justify-between text-sm mb-1">
+                            <span class="font-medium text-slate-700">${labelOf(labels, key)}</span>
+                            <span class="text-slate-500">${count} · ${pct}%</span>
+                        </div>
+                        <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="bar-fill h-full bg-indigo-500 rounded-full" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function isToday(dateValue) {
+            if (!dateValue) return false;
+            const today = new Date().toISOString().slice(0, 10);
+            return String(dateValue).slice(0, 10) === today;
+        }
+
+        function topKey(counts, labels) {
+            const entries = Object.entries(counts);
+            if (!entries.length) return '—';
+            entries.sort((a, b) => b[1] - a[1]);
+            return labelOf(labels, entries[0][0]);
+        }
+
+        function renderTable(rows) {
+            const body = document.getElementById('rows-body');
+            body.innerHTML = rows.map((row, index) => `
+                <tr class="hover:bg-slate-50">
+                    <td class="px-4 py-3 text-slate-400">${row.row_number ?? index + 1}</td>
+                    <td class="px-4 py-3 font-medium">${labelOf(SERVICE_LABELS, row.Paslauga)}</td>
+                    <td class="px-4 py-3">${labelOf(BUDGET_LABELS, row.Biudzetas)}</td>
+                    <td class="px-4 py-3">${labelOf(TIMELINE_LABELS, row.Terminas)}</td>
+                    <td class="px-4 py-3">${row.Komentaras || '—'}</td>
+                    <td class="px-4 py-3 whitespace-nowrap">${row.Data || '—'}</td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadStats() {
+            showOnly(loadingState);
+            updatedAt.textContent = 'Kraunama…';
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const payload = await response.json();
+                const rows = normalizeRows(payload);
+
+                if (!rows.length) {
+                    showOnly(emptyState);
+                    updatedAt.textContent = 'Nėra įrašų';
+                    lucide.createIcons();
+                    return;
+                }
+
+                const services = countBy(rows, 'Paslauga');
+                const budgets = countBy(rows, 'Biudzetas');
+                const timelines = countBy(rows, 'Terminas');
+                const total = rows.length;
+                const todayCount = rows.filter((row) => isToday(row.Data)).length;
+
+                document.getElementById('kpi-total').textContent = total;
+                document.getElementById('kpi-today').textContent = todayCount;
+                document.getElementById('kpi-top').textContent = topKey(services, SERVICE_LABELS);
+
+                renderBars('chart-service', services, SERVICE_LABELS, total);
+                renderBars('chart-budget', budgets, BUDGET_LABELS, total);
+                renderBars('chart-timeline', timelines, TIMELINE_LABELS, total);
+                renderTable(rows);
+
+                const now = new Date();
+                updatedAt.textContent = `Atnaujinta ${now.toLocaleTimeString('lt-LT')}`;
+                showOnly(dashboard);
+            } catch (error) {
+                console.error('Statistikos klaida:', error);
+                errorMessage.textContent = 'Nepavyko gauti JSON iš n8n. Patikrinkite, ar workflow aktyvus ir ar naršyklė leidžia užklausą (CORS).';
+                updatedAt.textContent = 'Klaida';
+                showOnly(errorState);
+            } finally {
+                lucide.createIcons();
+            }
+        }
+    </script>
+</body>
+</html>
